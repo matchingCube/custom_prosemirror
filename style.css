@@ -1,0 +1,10 @@
+.replacement {
+	background-color: #abffab;
+	outline: 1px #ababee;
+}
+.replacement:before {
+	content: "{";
+}
+.replacement:after {
+	content: "}";
+}

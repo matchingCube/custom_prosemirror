@@ -1,0 +1,27 @@
+1. simple variables
+There should be a button to insert a variable. The list of variables could be provided on page load and does not need to be pulled via ajax. They are in a form like {"variablename": "Label", "variable2": "Label2"}
+I think I managed to do that (very simple way) in the prosemirror code already.
+
+The variable placeholder is represented by a <span> tag (I convert it from {variable} to <span data-placeholder="variable">description</span> before loading the editor). Of course the span contents must not be edited by the user in the editor.
+It seems to be working from what I can see, but it is not complete.
+
+2. I have different commands that can be inserted. The most important is inserting language variables. In the template language it looks like:
+[lang modulename:identifier], but for the editor I could of course convert it to something like <span data-type="language" data-key="identifier" data-module="modulename"></span>.
+It would be handled similarly to the variables, but the module name and identifier should be editable after insertion. Like you can do it with a link in the above-mentioned editor.
+
+3. There are text blocks that can be included in templates like {TEMPLATE:mytextblock}. I would convert that for the editor to something like: <div class="template-block">contents of mytextblock</div> or similar. This block should be displayed readonly in the editor – and it should be collapsible.
+
+4. There are further placeholders that insert special elements on run time like
+[billing]
+[item]1;description;price[/item]
+[/billing]
+Which inserts kind of a table. I am not sure if those need to be replaced, maybe I will just leave this part as is because I don't know how to represent them in the editor in a way that makes sense.
+
+5. Now to the probably most complicated thing. There are two conditional types of content. Inline and block. I don't know if prosemirror can handle the same tag as block or inline depending on where it occurs. If not that would need some change on my side.
+
+5a. The inline conditionals are the simpler type. They are quite the same as links in html and currently represented like so:
+<p>Text here [if]{variable} === true[then]yes it is[else]it is not[/if]</p>
+Of course I could rewrite that to a html form like
+<if><condition>xxx</condition><then>sdada</then><else>dfsfs</else></if> but in the editor it would have to be color-marked, the condition displayed in small font above the sections beginning like it's sometimes done in registration forms with labels. Both text and conditions would need to be editable of course.
+
+5b. The conditional blocks might be a bit more complicated. They are technically the same as the previous one but they should be displayed differently. They should be displayed in a kind of tab view. So only a single block is displayed and above (small) there are tabs for all conditions. On click the corresponding version of the block would be shown. And you would be able to delete "tabs" and add new ones.
